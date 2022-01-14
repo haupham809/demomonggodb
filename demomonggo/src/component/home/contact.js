@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { View, Image, StyleSheet, FlatList, Text } from 'react-native';
+import { View, Image, StyleSheet, FlatList, Text, TouchableHighlight } from 'react-native';
 import {realm }  from "../../database/database";
 
 //xong
@@ -66,18 +66,37 @@ class contact extends Component {
 
 
     }
+   
+    _longclick(use){
+        alert(use)
+        realm.then((realm) => {
+        const  data = realm.objects("contact").filtered(' (mycontact = "' + this.state.phone + '" and yourcontact = "' + use + '" ) or ( mycontact = "' + use + '" and yourcontact = "' + this.state.phone + '" )' );
+        const  data1 = realm.objects("addcontact").filtered(' (mycontact = "' + this.state.phone + '" and yourcontact = "' + use + '" ) or ( mycontact = "' + use + '" and yourcontact = "' + this.state.phone + '" )' );
+        
+            realm.write(() => {
+               
+               realm.delete(data)
+               data1.update("status","xoa")
+              });
+              this._getdata();
 
+        })
+        
+       
+
+    }
     render() {
 
         return (
             <View>
                 <FlatList data={this.state.data} renderItem={({ item }) => (
-                    <View style={style.viewlist} >
+                    <TouchableHighlight underlayColor={"white"} onLongPress={this._longclick.bind(this,item.phone)}>
+                    <View style={style.viewlist}   >
                         <Image source={require("../../../src/img/icons8-man-blond-hair-48.png")} style={style.imagelist} ></Image>
                         <View style={style.viewinfor}>
                             <Text style={style.textname} >{item.name}</Text>
                             <Text style={style.textname} >{item.phone}</Text></View>
-                    </View>
+                    </View></TouchableHighlight>
                 )
 
                 }></FlatList>

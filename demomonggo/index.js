@@ -26,14 +26,14 @@ import 'react-native-get-random-values'
          return (
  <NavigationContainer >
  
- <Stack.Navigator initialRouteName={"LOGIN"} >
+ <Stack.Navigator initialRouteName={"LOGIN"}  >
      <Stack.Group>
-         <Stack.Screen name="LOGIN" component={login} options={{headerShown:false}}/>
-        <Stack.Screen name={"REGISTER"} component={register} />
-        <Stack.Screen name={"CONFIRMNUMBERPHONE"} component={confirmregister} />
+         <Stack.Screen name="LOGIN" component={login} options={{ headerShown:false}}/>
+        <Stack.Screen name={"REGISTER"}   component={register} />
+        <Stack.Screen name={"CONFIRMNUMBERPHONE"}  component={confirmregister} />
         </Stack.Group>
         <Stack.Screen name={"HOME"} options={{headerShown:false}} component={home} />
-        <Stack.Screen name={"SEARCH"} component={searchcontact} />
+        <Stack.Screen name={"SEARCH"}  component={searchcontact} />
         <Stack.Screen name={"MESSAGE"}  component={message} />
        </Stack.Navigator>
  

@@ -31,7 +31,6 @@ class search extends Component {
             keysearch: user
         })
        
-        
         this._getdata(this);
     }
     setdata(user) {
@@ -48,9 +47,9 @@ class search extends Component {
         
       
         realm.then((realm) => {
-            console.log(this.state.keysearch)
+            console.log("all "+realm.objects("addcontact"))
             
-            if( (realm.objects("addcontact").filtered(' (status = "true" or status = "false" ) and  mycontact = "' + this.state.keysearch + '" and yourcontact = "'+ this.state.phone + '"').length!=0 ) && (realm.objects("addcontact").filtered(' (status = "true" or status = "false" ) and  mycontact = "' + this.state.phone + '" and yourcontact = "'+ this.state.keysearch + '"').length!=0 )  ){
+            if( (realm.objects("addcontact").filtered(' (status = "true" or status = "false" ) and  mycontact = "' + this.state.keysearch + '" and yourcontact = "'+ this.state.phone + '"').length==0 ) && (realm.objects("addcontact").filtered(' (status = "true" or status = "false" ) and  mycontact = "' + this.state.phone + '" and yourcontact = "'+ this.state.keysearch + '"').length==0 )  ){
                 const data = realm.objects("accountlogin").filtered(' phone = "' + this.state.keysearch + '"');
          
                 console.log('helooooo')
@@ -101,7 +100,7 @@ class search extends Component {
                             <Text style={style.textname} >{item.name}</Text>
                             <Text style={style.textname} >{item.phone}</Text></View>
                             <View  style={style.Viewaddcontact} onStartShouldSetResponder={this._addcontact.bind(this,item.phone)}>
-                                <Text>V</Text>
+                            <Image source={require("../../../src/img/icons8-add-30.png")} style={StyleSheet.create({width:30,height:30})}></Image>
                                 
                             </View>
                     </View>
@@ -149,7 +148,7 @@ const style = StyleSheet.create({
 
     },
     viewlist: {
-        
+        padding:10,
         margin:4,
         flex: 1,
         flexDirection: 'row',
@@ -171,7 +170,7 @@ const style = StyleSheet.create({
     },
      Viewaddcontact:{
         alignItems: 'center', justifyContent: 'center',
-        backgroundColor:"rgba(0,0,0,0.5)",
+        
         flex: 1
     }
 

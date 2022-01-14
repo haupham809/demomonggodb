@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { TextInput, View, StyleSheet ,FlatList,Image ,Text} from 'react-native';
+import { TextInput, View, StyleSheet ,FlatList,Image ,Text, ScrollView} from 'react-native';
+import { BSON } from 'realm';
 import {realm ,createcontact}  from "../../database/database";
 
 class addcontact extends Component {
@@ -36,7 +37,7 @@ class addcontact extends Component {
         realm.then((realm) => {
             
             var sdata=[]
-            var gData=realm.objects("addcontact").filtered(' mycontact =  "' + this.state.phone + '"');
+            var gData=realm.objects("addcontact").filtered(' status = "false" and  ( (mycontact =  "' + this.state.phone + '") ||  ( yourcontact =  "' + this.state.phone + '" ) )');
             console.log(gData)
              if(gData.length >0){
 
@@ -66,11 +67,32 @@ class addcontact extends Component {
 
 
     }
-    _addcontact(){
+    _addcontact(use1,use2){
+      
+        realm.then((realm) => {
+            var gData=realm.objects("addcontact").filtered(' status = "false"  and  ( (mycontact = "' + use1 + '" and yourcontact = "'+ use2 + '" ) or ( mycontact = "' + use2 + '" and yourcontact = "'+ use1 + '"  ) )')
+            realm.write(() => {   
+                gData.update('status','true')
+               });
+               createcontact(use1,use2)
+               this._getdata();
 
+        })
     }
-    _deletecontact(){
-        
+    _deletecontact(use1,use2){
+      
+        realm.then((realm) => {
+            var gData=realm.objects("addcontact").filtered(' status = "false"  and  ( (mycontact = "' + use1 + '" and yourcontact = "'+ use2 + '" ) or ( mycontact = "' + use2 + '" and yourcontact = "'+ use1 + '"  ) )')
+            realm.write(() => {   
+                gData.update('status','xoa')
+               });
+              
+               this._getdata();
+
+        })
+    }
+    componentDidMount(){
+        this._getdata();
     }
 
     render() {
@@ -78,10 +100,11 @@ class addcontact extends Component {
             
                 
             
-                <View style={style.viewfriend}>
+                <View style={style.viewfriend} >
 
-                    <View style={style.viewaddfriend}>
+                    <View style={style.viewaddfriend} >
 
+<ScrollView>
                     <FlatList data={this.state.dataaddfriend} renderItem={({ item }) => (
                     <View style={style.viewlist} >
                         <View style={style.imagelist}>
@@ -90,18 +113,18 @@ class addcontact extends Component {
                             <Text style={style.textname} >{item.name}</Text>
                             <Text style={style.textname} >{item.phone}</Text>
                             </View>
-                            <View  style={style.Viewaddcontact} onStartShouldSetResponder={this._addcontact.bind(this,item.phone)}>
-                                <Text>V</Text>
-                                
+                            <View  style={style.Viewaddcontact} onStartShouldSetResponder={this._addcontact.bind(this,this.state.phone,item.phone)}>
+                            <Image source={require("../../../src/img/icons8-add-30.png")} style={StyleSheet.create({width:30,height:30})}></Image>
                             </View>
-                            <View  style={style.Viewdeletecontact} onStartShouldSetResponder={this._deletecontact.bind(this,item.phone)}>
-                                <Text>   X</Text>
+                            <View  style={style.Viewdeletecontact} onStartShouldSetResponder={this._deletecontact.bind(this,this.state.phone,item.phone)}>
+                            <Image source={require("../../../src/img/icons8-delete-24.png")} style={StyleSheet.create({width:30,height:30})}></Image>
                                 
                             </View>
                     </View>
                 )
 
                 }></FlatList>
+                </ScrollView>
 
                     </View>
                     
@@ -113,10 +136,11 @@ class addcontact extends Component {
 }
 const style = StyleSheet.create({
     viewlist: {
-        
+        backgroundColor: "rgba(0,0,0,0.3)",
         margin:4,
         flex: 1,
         flexDirection: 'row',
+        padding:10,
 
         borderRadius: 10
     },
@@ -127,25 +151,24 @@ const style = StyleSheet.create({
     viewinfor: {
         
         marginLeft:10,
-        flex: 7,
+        flex: 6,
         flexDirection: 'column',
-
         borderRadius: 10
     },
     viewaddcontact: {
-        backgroundColor: "rgba(0,0,0,0.5)",
-        flex: 1,
+        
+        flex: 2,
         borderRadius: 10
         
     },
     Viewdeletecontact:{
-        backgroundColor: "rgba(0,0,0,0.3)",
+       
         flex: 1,
         borderRadius: 10
     },
    
     viewaddfriend: {
-        backgroundColor: "rgba(0,0,0,0.3)",
+      
         margin:5,
         padding:10,
         borderRadius: 20

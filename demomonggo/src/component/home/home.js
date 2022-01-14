@@ -41,6 +41,7 @@ export default class home extends Component {
                  >
             <Tab.Screen name="Contract"  initialParams={{phone:this.state.phone}} options={
                 {
+                    unmountOnBlur:true,
                 tabBarLabel:"Contract",
                tabBarIcon:({forcused})=>(
 
@@ -52,7 +53,7 @@ export default class home extends Component {
             }
                 }  component={contact} ro />
             <Tab.Screen name="add" initialParams={{phone:this.state.phone}}   options={
-                {
+                { unmountOnBlur:true,
                     headerRight:({forcused})=>(
                         <View style={StyleSheet.create({alignItems:'center',justifyContent:'center',marginRight:40})} onStartShouldSetResponder={()=>{ this.props.navigation.navigate("SEARCH",{phone:this.state.phone});}} >
                       
@@ -71,7 +72,7 @@ export default class home extends Component {
             }
                 }  component={addcontact} />
             <Tab.Screen name="account" initialParams={{phone:this.state.phone}}  options={
-                {
+                { unmountOnBlur:true,
                     headerRight:({forcused})=>(
                         <View style={StyleSheet.create({alignItems:'center',justifyContent:'center',marginRight:40})} onStartShouldSetResponder={()=>{ this.props.navigation.navigate("LOGIN");}} >
                       

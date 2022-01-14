@@ -159,6 +159,7 @@ class editpass extends Component {
 
 
     }
+    
     render() {
         return (
             <View style={style.viewhome}>
