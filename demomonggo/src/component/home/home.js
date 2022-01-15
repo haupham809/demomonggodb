@@ -28,7 +28,7 @@ export default class home extends Component {
              
                 tabBarStyle:{
                     position:'absolute',
-                    bottom:20,
+                    bottom:10,
                     left:20,
                     right:20,
                     elevation:20,
@@ -39,10 +39,10 @@ export default class home extends Component {
                 } }}  
                 
                  >
-            <Tab.Screen name="Contract"  initialParams={{phone:this.state.phone}} options={
+            <Tab.Screen name="Contact"  initialParams={{phone:this.state.phone}} options={
                 {
                     unmountOnBlur:true,
-                tabBarLabel:"Contract",
+                tabBarLabel:"Contact",
                tabBarIcon:({forcused})=>(
 
                    <View style={StyleSheet.create({alignItems:'center',justifyContent:'center'})}>
@@ -52,7 +52,7 @@ export default class home extends Component {
             
             }
                 }  component={contact} ro />
-            <Tab.Screen name="add" initialParams={{phone:this.state.phone}}   options={
+            <Tab.Screen name="Infor Contact" initialParams={{phone:this.state.phone}}   options={
                 { unmountOnBlur:true,
                     headerRight:({forcused})=>(
                         <View style={StyleSheet.create({alignItems:'center',justifyContent:'center',marginRight:40})} onStartShouldSetResponder={()=>{ this.props.navigation.navigate("SEARCH",{phone:this.state.phone});}} >
@@ -61,7 +61,7 @@ export default class home extends Component {
 
                     ),
                    
-                tabBarLabel:"Add",
+                tabBarLabel:"Infor Contact",
                tabBarIcon:({forcused})=>(
 
                    <View style={StyleSheet.create({alignItems:'center',justifyContent:'center'})}>
@@ -71,7 +71,7 @@ export default class home extends Component {
             
             }
                 }  component={addcontact} />
-            <Tab.Screen name="account" initialParams={{phone:this.state.phone}}  options={
+            <Tab.Screen name="Account" initialParams={{phone:this.state.phone}}  options={
                 { unmountOnBlur:true,
                     headerRight:({forcused})=>(
                         <View style={StyleSheet.create({alignItems:'center',justifyContent:'center',marginRight:40})} onStartShouldSetResponder={()=>{ this.props.navigation.navigate("LOGIN");}} >

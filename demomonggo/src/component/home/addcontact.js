@@ -37,14 +37,14 @@ class addcontact extends Component {
         realm.then((realm) => {
             
             var sdata=[]
-            var gData=realm.objects("addcontact").filtered(' status = "false" and  ( (mycontact =  "' + this.state.phone + '") ||  ( yourcontact =  "' + this.state.phone + '" ) )');
+            var gData=realm.objects("addcontact").filtered(' status = "false" and     yourcontact =  "' + this.state.phone + '"  ');
             console.log(gData)
              if(gData.length >0){
 
 
                 
              for(var i=0;i < gData.length;i++){
-               var data1 = realm.objects("accountlogin").filtered(' phone = "' + gData[i].yourcontact + '"');
+               var data1 = realm.objects("accountlogin").filtered(' phone = "' + gData[i].mycontact + '"');
                sdata.push(data1[0])
 
              }
@@ -62,7 +62,35 @@ class addcontact extends Component {
 
 
         })
-       
+
+        realm.then((realm) => {
+            
+            var sdata=[]
+            var gData=realm.objects("addcontact").filtered(' status = "false" and    mycontact  =  "' + this.state.phone + '"  ');
+            console.log(gData)
+             if(gData.length >0){
+
+
+                
+             for(var i=0;i < gData.length;i++){
+               var data1 = realm.objects("accountlogin").filtered(' phone = "' + gData[i].yourcontact + '"');
+               sdata.push(data1[0])
+
+             }
+             this.setdatasendfriend(sdata)
+            
+            }
+            else {
+               this.setdatasendfriend(sdata)
+            }
+            
+            
+            
+
+
+
+
+        })
 
 
 
@@ -70,11 +98,13 @@ class addcontact extends Component {
     _addcontact(use1,use2){
       
         realm.then((realm) => {
-            var gData=realm.objects("addcontact").filtered(' status = "false"  and  ( (mycontact = "' + use1 + '" and yourcontact = "'+ use2 + '" ) or ( mycontact = "' + use2 + '" and yourcontact = "'+ use1 + '"  ) )')
-            realm.write(() => {   
+            var gData=realm.objects("addcontact").filtered(' status = "false"  and yourcontact   = "' + use1 + '" and mycontact = "'+ use2 + '"')
+            realm.write(() => {  
+             
                 gData.update('status','true')
                });
                createcontact(use1,use2)
+               createcontact(use2,use1)
                this._getdata();
 
         })
@@ -82,7 +112,7 @@ class addcontact extends Component {
     _deletecontact(use1,use2){
       
         realm.then((realm) => {
-            var gData=realm.objects("addcontact").filtered(' status = "false"  and  ( (mycontact = "' + use1 + '" and yourcontact = "'+ use2 + '" ) or ( mycontact = "' + use2 + '" and yourcontact = "'+ use1 + '"  ) )')
+            var gData=realm.objects("addcontact").filtered(' status = "false"  and mycontact = "' + use1 + '" and yourcontact = "'+ use2 + '"')
             realm.write(() => {   
                 gData.update('status','xoa')
                });
@@ -103,8 +133,8 @@ class addcontact extends Component {
                 <View style={style.viewfriend} >
 
                     <View style={style.viewaddfriend} >
-
-<ScrollView>
+                       
+                        <Text>{this.state.dataaddfriend.length>0?'Add':''}</Text>
                     <FlatList data={this.state.dataaddfriend} renderItem={({ item }) => (
                     <View style={style.viewlist} >
                         <View style={style.imagelist}>
@@ -124,7 +154,23 @@ class addcontact extends Component {
                 )
 
                 }></FlatList>
-                </ScrollView>
+                  <Text>{this.state.datasendfriend.length>0?'Send':''}</Text>
+                  <FlatList data={this.state.datasendfriend} renderItem={({ item }) => (
+                    <View style={style.viewlist} >
+                        <View style={style.imagelist}>
+                        <Image source={require("../../../src/img/icons8-man-blond-hair-48.png")}  ></Image></View>
+                        <View style={style.viewinfor}>
+                            <Text style={style.textname} >{item.name}</Text>
+                            <Text style={style.textname} >{item.phone}</Text>
+                            </View>
+                            <View  style={style.Viewdeletecontact} onStartShouldSetResponder={this._deletecontact.bind(this,this.state.phone,item.phone)}>
+                            <Image source={require("../../../src/img/icons8-delete-24.png")} style={StyleSheet.create({width:30,height:30})}></Image>
+                                
+                            </View>
+                    </View>
+                )
+
+                }></FlatList>
 
                     </View>
                     

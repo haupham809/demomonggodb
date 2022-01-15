@@ -10,7 +10,6 @@ import { realm } from "../../database/database";
 
 
 
-
 export default class login extends Component {
     constructor(props) {
         super(props);
@@ -108,7 +107,10 @@ export default class login extends Component {
         
         realm.then((realm) => {
           if(realm.objects("accountlogin").filtered(' phone = "'+this.state.username+'"').length<=0){
-            this.props.navigation.navigate("CONFIRMNUMBERPHONE",{name:this.state.name,username:this.state.username,pass:this.state.pass,number:Math.floor(Math.random() * 1000000) + 1 })
+            //var s=Math.floor(Math.random() * 1000000) + 1;
+            var s=19092000;
+              
+            this.props.navigation.navigate("CONFIRMNUMBERPHONE",{name:this.state.name,username:this.state.username,pass:this.state.pass,number:s })
           }
           else {
             this._seterrorname('');
